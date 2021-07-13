@@ -15,6 +15,10 @@ const GlobalStyle = createGlobalStyle`
     font-family: sans-serif;
   }
 
+  body.dark {
+
+  }
+
   #_next {
     display: flex;
     min-height: 100vh;

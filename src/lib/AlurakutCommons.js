@@ -24,7 +24,7 @@ export function AlurakutMenu({ githubUser }) {
   return (
     <AlurakutMenu.Wrapper isMenuOpen={isMenuOpen}>
       <div className="container">
-        <AlurakutMenu.Logo src={`${BASE_URL}/logo.svg`} />
+        <AlurakutMenu.Logo src={`https://github.com/${githubUser}.png`} />
 
         <nav style={{ flex: 1 }}>
           {[{ name: 'Inicio', slug: '/'}, {name: 'Amigos', slug: '/amigos'}, {name: 'Comunidades', slug: '/comunidades'}].map((menuItem) => (
@@ -157,9 +157,9 @@ AlurakutMenu.Wrapper = styled.header`
 `;
 AlurakutMenu.Logo = styled.img`
   background-color: #ffffff;
-  padding: 9px 14px;
+  padding: 2px 2px;
   border-radius: 1000px;
-  height: 34px;
+  height: 38px;
 `;
 
 function AlurakutMenuProfileSidebar({ githubUser }) {
