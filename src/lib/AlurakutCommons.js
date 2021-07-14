@@ -1,7 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 import NextLink from 'next/link';
-import ButtonTheme from '../components/ButtonTheme'
 
 const BASE_URL = 'http://alurakut.vercel.app/';
 const v = '1';
@@ -36,7 +35,6 @@ export function AlurakutMenu({ githubUser }) {
         
         <nav>
           <div>
-            <ButtonTheme />
           </div>
           <a href={`/logout`}>
             Sair
@@ -201,10 +199,10 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
 // AlurakutProfileSidebarMenuDefault
 // ================================================================================================================
 export function AlurakutProfileSidebarMenuDefault() {
-  let [toggleTheme, setToggleTheme] = useState('White');
-  console.log(toggleTheme);
+  const [darkTheme, setDarkTheme] = React.useState(false);
+
   return (
-    <AlurakutProfileSidebarMenuDefault.Wrapper>
+    <AlurakutProfileSidebarMenuDefault.Wrapper darkTheme={darkTheme} >
       <nav>
         <a href="/">
           <img src={`${BASE_URL}/icons/user.svg`} />
@@ -222,25 +220,27 @@ export function AlurakutProfileSidebarMenuDefault() {
           <img src={`${BASE_URL}/icons/sun.svg`} />
             Depoimentos
           </a>
+        <a id='changeTheme'onClick={async () => {
+          setDarkTheme(!darkTheme)
+          if(darkTheme) {
+            document.body.classList.add('dark');
+            document.querySelector('.alurakutMenuProfileSidebar').classList.add('dark')
+            document.querySelector('#changeTheme').innerText = 'Tema: ☀';
+          }
+          if(!darkTheme){
+            document.body.classList.remove('dark')
+            document.querySelector('.alurakutMenuProfileSidebar').classList.remove('dark')
+            document.querySelector('#changeTheme').innerText = 'Tema: 🌑';
+          }
+          }}>
+            Tema: 🌑
+        </a>
       </nav>
       <hr />
       <nav>
         <a href="/">
           <img src={`${BASE_URL}/icons/plus.svg`} />
             GitHub Trends
-        </a>
-        
-        <a onClick={() => {
-                document.body.classList.toggle('dark');
-                document.querySelector('.alurakutMenuProfileSidebar').classList.toggle('dark');
-                if(toggleTheme === 'White'){
-                  setToggleTheme('Dark') 
-                }
-                if (toggleTheme == 'Dark') {
-                  setToggleTheme('White') 
-                }
-        }}>
-          <span id='theme'> 'Tema: {toggleTheme}' </span> 
         </a>
         <a href="/logout">
           <img src={`${BASE_URL}//icons/logout.svg`} />
@@ -295,7 +295,7 @@ export function OrkutNostalgicIconSet(props) {
         { name: 'Legal', slug: 'legal', icon: 'cool' },
         { name: 'Sexy', slug: 'sexy', icon: 'heart' },
       ].map(({ name, slug, icon }) => {
-        const total = props[slug] ? props[slug] : 2;
+        const total = props[slug] ? props[slug] : 3;
         return (
           <li key={`orkut__icon_set__${slug}`}>
             <span className="OrkutNostalgicIconSet__title">
