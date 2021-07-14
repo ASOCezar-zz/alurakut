@@ -13,10 +13,12 @@ const GlobalStyle = createGlobalStyle`
   body {
     background-color: #D9E6F6;
     font-family: sans-serif;
+
+    transition: background 0.4s linear
   }
 
   body.dark {
-
+	  background: #292C35;
   }
 
   #_next {

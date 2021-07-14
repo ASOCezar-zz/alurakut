@@ -5,6 +5,7 @@ import { AlurakutMenu } from '../src/lib/AlurakutCommons'
 import BoxWelcomeArea from '../src/components/BoxWelcomeArea';
 import FormWhatYouWant from '../src/components/FormWhatYouWant';
 import ProfileRelationsContent from '../src/components/ProfileRelationsContent';
+import ButtonTheme from '../src/components/ButtonTheme';
 
 
 
@@ -29,6 +30,7 @@ export default function Home() {
 
   return (
     <>
+      
       <AlurakutMenu githubUser={githubUser} />
       <MainGrid>
 

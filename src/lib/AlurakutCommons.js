@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled, { css } from 'styled-components';
 import NextLink from 'next/link';
+import ButtonTheme from '../components/ButtonTheme'
 
 const BASE_URL = 'http://alurakut.vercel.app/';
 const v = '1';
-
 
 function Link({ href, children, ...props }) {
   return (
@@ -33,8 +33,11 @@ export function AlurakutMenu({ githubUser }) {
             </Link>
           ))}
         </nav>
-
+        
         <nav>
+          <div>
+            <ButtonTheme />
+          </div>
           <a href={`/logout`}>
             Sair
           </a>
@@ -65,6 +68,7 @@ AlurakutMenu.Wrapper = styled.header`
     right: 0;
     top: 48px;
     transition: .3s;
+    transition: background 0.2s linear;
     pointer-events: ${({ isMenuOpen }) => isMenuOpen ? 'all' : 'none'};
     opacity: ${({ isMenuOpen }) => isMenuOpen ? '1' : '0'};
     transform: ${({ isMenuOpen }) => isMenuOpen ? 'translateY(0)' : 'translateY(calc(-100% - 48px))'};
@@ -90,6 +94,18 @@ AlurakutMenu.Wrapper = styled.header`
       margin-bottom: 8px;
       border-color: transparent;
       border-bottom-color: #ECF2FA;
+    }
+  }
+  .alurakutMenuProfileSidebar.dark{
+    background: #585959;
+    .boxLink {
+      color: white;
+    }
+    hr {
+      border-bottom-color: white;
+    }
+    a {
+      color: white;
     }
   }
   .container {
@@ -185,6 +201,8 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
 // AlurakutProfileSidebarMenuDefault
 // ================================================================================================================
 export function AlurakutProfileSidebarMenuDefault() {
+  let [toggleTheme, setToggleTheme] = useState('White');
+  console.log(toggleTheme);
   return (
     <AlurakutProfileSidebarMenuDefault.Wrapper>
       <nav>
@@ -210,11 +228,24 @@ export function AlurakutProfileSidebarMenuDefault() {
         <a href="/">
           <img src={`${BASE_URL}/icons/plus.svg`} />
             GitHub Trends
-          </a>
+        </a>
+        
+        <a onClick={() => {
+                document.body.classList.toggle('dark');
+                document.querySelector('.alurakutMenuProfileSidebar').classList.toggle('dark');
+                if(toggleTheme === 'White'){
+                  setToggleTheme('Dark') 
+                }
+                if (toggleTheme == 'Dark') {
+                  setToggleTheme('White') 
+                }
+        }}>
+          <span id='theme'> 'Tema: {toggleTheme}' </span> 
+        </a>
         <a href="/logout">
           <img src={`${BASE_URL}//icons/logout.svg`} />
             Sair
-          </a>
+        </a>
       </nav>
     </AlurakutProfileSidebarMenuDefault.Wrapper>
   )

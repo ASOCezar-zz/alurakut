@@ -1,14 +1,18 @@
-import { styled } from 'styled-components';
+import StyledCheckBox from './style'
 
 const ButtonTheme = () => {
     return (
-        <div>
-            <input type="checkbox" class="checkbox" id="chk" />
-            <label class="label" for="chk">
-                <i class="fas fa-moon"></i>
-                <i class="fas fa-sun"></i>
-                <div class="ball"></div>
+        <StyledCheckBox>
+            <input type="checkbox" className="checkbox" id="chk" onChange={() => {
+                document.body.classList.toggle('dark');
+            }}/>
+            <label className="label" for="chk">
+                <i className="fas fa-moon"></i>
+                <i className="fas fa-sun"></i>
+                <div className="ball"></div>
             </label>
-        </div>
+        </StyledCheckBox>
     )
 }
+
+export default ButtonTheme;
