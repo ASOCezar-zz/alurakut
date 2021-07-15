@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MainGrid from '../src/components/MainGrid'
 import ProfileSidebar from '../src/components/ProfileSidebar';
 import { AlurakutMenu } from '../src/lib/AlurakutCommons'
 import BoxWelcomeArea from '../src/components/BoxWelcomeArea';
 import FormWhatYouWant from '../src/components/FormWhatYouWant';
 import ProfileRelationsContent from '../src/components/ProfileRelationsContent';
+
 
 
 export default function Home() {
@@ -26,6 +27,28 @@ export default function Home() {
     image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
   }]);
 
+  const [followers, setFollowers] = useState([]);
+
+  useEffect(() => {
+    fetch(`https://api.github.com/users/peas/followers`)
+      .then((res) => {
+        return res.json();
+      })
+      .then((res) => {setFollowers(res)})
+      .catch(err => console.error(err.message));
+  }, [])
+
+  function arrayDefault(){
+    let arrayAtt = [];
+    followers.map(item => {
+      arrayAtt.push({
+        id: (item.id),
+        title: (item.login),
+        image: (item.avatar_url)
+      })
+    })
+    return arrayAtt;
+  }
   return (
     <>
       <AlurakutMenu githubUser={githubUser} />
@@ -41,16 +64,23 @@ export default function Home() {
         </div>
 
         <div className='profileRelationsArea' style={{gridArea:'profileRelationsArea'}}>
+          
           <ProfileRelationsContent
-           name = 'Comunities'
-           array = {comunities}
-           sourceImage='http://placehold.it/300x800'
+            name = 'Comunities'
+            array = {comunities}
+            sourceImage='http://placehold.it/300x800'
           />
 
           <ProfileRelationsContent
-           name='Amigos'
-           array={pessoasFavoritas}
-           sourceImage='http://placehold.it/300x800'
+            name='Friends'
+            array={pessoasFavoritas}
+            sourceImage='http://placehold.it/300x800'
+          />
+
+          <ProfileRelationsContent
+            name='Followers'
+            array={arrayDefault()}
+            sourceImage='http://placehold.it/300x800'
           />
           
         </div>

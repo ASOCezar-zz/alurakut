@@ -220,7 +220,7 @@ export function AlurakutProfileSidebarMenuDefault() {
           <img src={`${BASE_URL}/icons/sun.svg`} />
             Depoimentos
           </a>
-        <a id='changeTheme'onClick={async () => {
+        <a id='changeTheme'onClick={() => {
           setDarkTheme(!darkTheme)
           if(darkTheme) {
             document.body.classList.add('dark');

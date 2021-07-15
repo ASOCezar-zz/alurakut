@@ -9,6 +9,10 @@ export const ProfileRelationsBoxWrapper = styled(Box)`
     max-height: auto;
     list-style: none;
   }
+  ul li:nth-child(n+7){
+    display: none;
+  }
+
   img {
     object-fit: cover;
     background-position: center center;
