@@ -21,11 +21,7 @@ export default function Home() {
     {id: 6, title:'felipefialho', image: 'http://github.com/felipefialho.png'}
   ]
 
-  const [comunities, setComunities] = useState([{
-    id: "412455151",
-    title: 'Eu odeio acordar cedo',
-    image: 'https://alurakut.vercel.app/capa-comunidade-01.jpg'
-  }]);
+  const [communities, setCommunities] = useState([]);
 
   const [followers, setFollowers] = useState([]);
 
@@ -36,7 +32,23 @@ export default function Home() {
       })
       .then((res) => {setFollowers(res)})
       .catch(err => console.error(err.message));
+
+      fetch('https://graphql.datocms.com/', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'da9d5c1afd56a59b4de7acbbadf7e4',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({ 'query': `query{ allCommunities { id, title, imageUrl, slugCreator }}`})
+      })
+      .then((res) => res.json())
+      .then((res) =>{
+        setCommunities(res.data.allCommunities)
+      })
+      .catch(err => console.error(err.message))
   }, [])
+
 
   function arrayDefault(){
     let arrayAtt = [];
@@ -49,6 +61,20 @@ export default function Home() {
     })
     return arrayAtt;
   }
+
+  function communityDefault(){
+    let communityAtt = [];
+    communities.map(item => {
+      communityAtt.push({
+        id: (item.id),
+        title: (item.title),
+        image: (item.imageUrl)
+      })
+    })
+    return communityAtt;
+  }
+
+
   return (
     <>
       <AlurakutMenu githubUser={githubUser} />
@@ -60,14 +86,14 @@ export default function Home() {
 
         <div className='welcomeArea' style={{gridArea:'welcomeArea'}}>
           <BoxWelcomeArea />
-          <FormWhatYouWant comunities={comunities} setComunities={setComunities}/>
+          <FormWhatYouWant communities={communities} setCommunities={setCommunities} />
         </div>
 
         <div className='profileRelationsArea' style={{gridArea:'profileRelationsArea'}}>
           
           <ProfileRelationsContent
-            name = 'Comunities'
-            array = {comunities}
+            name = 'communities'
+            array = {communityDefault()}
             sourceImage='http://placehold.it/300x800'
           />
 

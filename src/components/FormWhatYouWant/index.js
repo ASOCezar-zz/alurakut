@@ -10,15 +10,28 @@ const FormWhatYouWant = (props) => {
 
                 const dataForm = new FormData(event.target);
  
-
-                const comunity = {
-                    id: new Date().toISOString(),
+                const communityForm = {
                     title: dataForm.get('title'),
-                    image: dataForm.get('image')
+                    imageUrl: dataForm.get('image'),
+                    slugCreator: 'ASOCezar'
                 }
 
-                const attComunities = [...props.comunities,  comunity];
-                props.setComunities(attComunities);
+
+                fetch('/api/communities', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(communityForm)
+                })
+                .then(async(res) => {
+                    const data = await res.json();
+                    const community = data.createdCommunity;
+                    const attCommunties = [...props.communities, community]
+                    props.setCommunities(attCommunties);
+                })
+
+                
             } } >
                 <div>
                     <input

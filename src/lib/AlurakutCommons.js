@@ -199,7 +199,16 @@ function AlurakutMenuProfileSidebar({ githubUser }) {
 // AlurakutProfileSidebarMenuDefault
 // ================================================================================================================
 export function AlurakutProfileSidebarMenuDefault() {
-  const [darkTheme, setDarkTheme] = React.useState(false);
+  const [darkTheme, setDarkTheme] = React.useState();
+  React.useEffect(() => {
+    if(!darkTheme) {
+      document.body.classList.remove('dark')
+      document.querySelector('.alurakutMenuProfileSidebar').classList.remove('dark')
+    } else {
+      document.body.classList.add('dark');
+      document.querySelector('.alurakutMenuProfileSidebar').classList.add('dark')
+    }
+  }, [darkTheme]);
 
   return (
     <AlurakutProfileSidebarMenuDefault.Wrapper darkTheme={darkTheme} >
@@ -222,18 +231,8 @@ export function AlurakutProfileSidebarMenuDefault() {
           </a>
         <a id='changeTheme'onClick={() => {
           setDarkTheme(!darkTheme)
-          if(darkTheme) {
-            document.body.classList.add('dark');
-            document.querySelector('.alurakutMenuProfileSidebar').classList.add('dark')
-            document.querySelector('#changeTheme').innerText = 'Tema: ☀';
-          }
-          if(!darkTheme){
-            document.body.classList.remove('dark')
-            document.querySelector('.alurakutMenuProfileSidebar').classList.remove('dark')
-            document.querySelector('#changeTheme').innerText = 'Tema: 🌑';
-          }
           }}>
-            Tema: 🌑
+            Tema: {darkTheme ?  '☀' : '🌑' }
         </a>
       </nav>
       <hr />
