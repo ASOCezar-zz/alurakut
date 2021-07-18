@@ -7,6 +7,7 @@ import { AlurakutMenu } from '../src/lib/AlurakutCommons'
 import BoxWelcomeArea from '../src/components/BoxWelcomeArea';
 import FormWhatYouWant from '../src/components/FormWhatYouWant';
 import ProfileRelationsContent from '../src/components/ProfileRelationsContent';
+import ModalCommunity from '../src/components/ModalCommunity';
 
 
 
@@ -24,8 +25,9 @@ export default function Home(props) {
   ]
 
   const [communities, setCommunities] = useState([]);
-
   const [followers, setFollowers] = useState([]);
+  const [isModalFriendOpen, setIsModalFriendOpen] = useState(false);
+  const [isModalCommunityOpen, setIsModalCommunityOpen] = useState(false);
 
   useEffect(() => {
     fetch(`https://api.github.com/users/${githubUser}/followers`)
@@ -88,13 +90,29 @@ export default function Home(props) {
 
         <div className='welcomeArea' style={{gridArea:'welcomeArea'}}>
           <BoxWelcomeArea />
-          <FormWhatYouWant communities={communities} setCommunities={setCommunities} />
+
+          
+          
+          <FormWhatYouWant
+            isModalCommunityOpen={isModalCommunityOpen}
+            setIsModalCommunityOpen={setIsModalCommunityOpen}
+            isModalFriendOpen={isModalFriendOpen}
+            setIsModalFriendOpen={setIsModalFriendOpen}
+          />
+
+          <ModalCommunity
+            isModalCommunityOpen={isModalCommunityOpen}
+            setIsModalCommunityOpen={setIsModalCommunityOpen}
+            communities={communities}
+            setCommunities={setCommunities}
+          />
+
         </div>
 
         <div className='profileRelationsArea' style={{gridArea:'profileRelationsArea'}}>
           
           <ProfileRelationsContent
-            name = 'communities'
+            name = 'Communities'
             array = {communityDefault()}
             sourceImage='http://placehold.it/300x800'
           />
@@ -110,6 +128,7 @@ export default function Home(props) {
             array={arrayDefault()}
             sourceImage='http://placehold.it/300x800'
           />
+
           
         </div>
 
