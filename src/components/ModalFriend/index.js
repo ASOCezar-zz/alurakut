@@ -1,72 +1,59 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
+const { SiteClient } = require('datocms-client');
+const client = new SiteClient('2f09188895af0fd9fe6e983a14e677')
 
 function ModalCommunity(props) {
+    async function createRecord(data) {
+        console.log('data',data)
+        await client.items.create({
+            itemType: '971922',
+            title: data.login,
+            image_url: data.avatar_url,
+        })
+    }
     return (
         <>
-            <Wrapper isModalCommunityOpen={props.isModalCommunityOpen} />
-            <Div isModalCommunityOpen={props.isModalCommunityOpen}>
-                <p className="title"> Criar Comunidade </p>
-                <form id='form'>
+            <Wrapper isModalCommunityOpen={props.isModalFriendOpen} />
+            <Div isModalCommunityOpen={props.isModalFriendOpen}>
+                <p className="title"> Adicionar amigo </p>
+                <form id='newFriendForm'>
                     <div className="divInput">
                         <div >
                             <input
-                            placeholder='Qual vai ser o nome da sua comunidade?'
-                            id='title'
-                            name='title'
-                            aria-label='Qual vai ser o nome da sua comunidade?' 
+                            placeholder='Qual o username do Github do seu novo amigo?'
+                            id='username'
+                            name='username'
+                            aria-label='Qual o username do Github do seu novo amigo?' 
                             type='text'
-                            />
-                        </div>
-                        <div>
-                        <input
-                            placeholder='Coloque uma URL para usarmos de capa'
-                            id='image'
-                            name='image'
-                            aria-label='Coloque uma URL para usarmos de capa' 
-                            type='url'
                             />
                         </div>
                     </div>
                     <div className='buttonsDiv'>
                         <button type='submit' onClick={(event) => {
                             event.preventDefault();
-                            if(document.getElementById('image').value === '' || document.getElementById('title').value === '') {
-                                if(document.getElementById('title').value === '') document.querySelector('#title').classList.add('error')
-                                if(document.getElementById('image').value === '') document.querySelector('#image').classList.add('error')
+                            if(document.getElementById('username').value === '') {
+                                document.querySelector('#username').classList.add('error')
                             } else {
-                                props.setIsModalCommunityOpen(false);
-                                document.querySelector('#title').classList.remove('error')
-                                document.querySelector('#image').classList.remove('error')
-                                const newCommunityform = document.getElementById('form');
-                                const dataForm = new FormData(newCommunityform);
-                                const communityForm = {
-                                    title: dataForm.get('title'),
-                                    imageUrl: dataForm.get('image'),
-                                    slugCreator: 'ASOCezar'
+                                props.setIsModalFriendOpen(false);
+                                document.querySelector('#username').classList.remove('error')
+                                const newFriendForm = document.getElementById('newFriendForm');
+                                const dataFriendForm = new FormData(newFriendForm);
+                                const friendForm = {
+                                    title: dataFriendForm.get('username')
                                 }
-
-                                fetch('/api/communities', {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    body: JSON.stringify(communityForm)
-                                })
-                                .then(async(res) => {
+                                fetch(`https://api.github.com/users/${friendForm.title}`)
+                                .then(async (res) => {
                                     const data = await res.json();
-                                    const community = data.createdCommunity;
-                                    const attCommunties = [...props.communities, community]
-                                    props.setCommunities(attCommunties);
+                                    createRecord(data)
                                 })
                             }
                         }}>
-                            Criar comunidade
+                            Adicionar amigo
                         </button>
                         <a className='cancelButton' onClick={() => {
                             document.querySelector('#title').classList.remove('error')
-                            document.querySelector('#image').classList.remove('error')
-                            props.setIsModalCommunityOpen(false)}
+                            props.setIsModalFriendOpen(false)}
                         }>
                             Cancelar
                         </a>
@@ -152,12 +139,11 @@ const Div = styled.div`
     .title {
         font-size: 32px;
         font-weight: 400;
-        margin-bottom: 20px;
         text-align: left;
     }
     form{
-        align-items: center;
-        justify-content: center;
+        display: flex;
+        flex-direction: column;
         padding: 0;
     }
     input {
@@ -182,7 +168,7 @@ const Div = styled.div`
         padding: 8px 12px;
         color: #FFFFFF;
         border-radius: 10000px;
-        background-color: #6F92BB;
+        background-color: #03bb85;
     }
 
     a {
@@ -195,6 +181,7 @@ const Div = styled.div`
     }
 
     .buttonsDiv{
+        margin-top: 30px;
         display:flex;
         flex-direction: row;
         justify-content: space-between

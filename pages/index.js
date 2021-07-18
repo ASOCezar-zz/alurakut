@@ -8,22 +8,15 @@ import BoxWelcomeArea from '../src/components/BoxWelcomeArea';
 import FormWhatYouWant from '../src/components/FormWhatYouWant';
 import ProfileRelationsContent from '../src/components/ProfileRelationsContent';
 import ModalCommunity from '../src/components/ModalCommunity';
-
+import ModalFriend from '../src/components/ModalFriend';
 
 
 export default function Home(props) {
 
+
   const githubUser = props.githubUser;
 
-  const pessoasFavoritas = [ 
-    {id: 1, title: 'dsohenrique', image: 'http://github.com/dsohenrique.png'},
-    {id: 2, title:'juunegreiros', image: 'http://github.com/juunegreiros.png'},
-    {id: 3, title:'omariosouto', image: 'http://github.com/omariosouto.png'},
-    {id: 4, title:'peas', image: 'http://github.com/peas.png'},
-    {id: 5, title:'maykbrito', image: 'http://github.com/maykbrito.png'},
-    {id: 6, title:'felipefialho', image: 'http://github.com/felipefialho.png'}
-  ]
-
+  const [friends, setFriends] = useState([]);
   const [communities, setCommunities] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [isModalFriendOpen, setIsModalFriendOpen] = useState(false);
@@ -51,10 +44,25 @@ export default function Home(props) {
         setCommunities(res.data.allCommunities)
       })
       .catch(err => console.error(err.message))
+
+      fetch('https://graphql.datocms.com/', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'da9d5c1afd56a59b4de7acbbadf7e4',
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ 'query': `query{ allFriends { id, title, imageUrl} }` })
+      })
+      .then((res) => res.json())
+      .then((res) => {
+        setFriends(res.data.allFriends)
+      })
+      .catch(err => console.error(err.message))
   }, [])
 
 
-  function arrayDefault(){
+  function followersDefault(){
     let arrayAtt = [];
     followers.map(item => {
       arrayAtt.push({
@@ -66,9 +74,9 @@ export default function Home(props) {
     return arrayAtt;
   }
 
-  function communityDefault(){
+  function arrayDefault(props){
     let communityAtt = [];
-    communities.map(item => {
+    props.map(item => {
       communityAtt.push({
         id: (item.id),
         title: (item.title),
@@ -77,7 +85,6 @@ export default function Home(props) {
     })
     return communityAtt;
   }
-
 
   return (
     <>
@@ -107,25 +114,32 @@ export default function Home(props) {
             setCommunities={setCommunities}
           />
 
+          <ModalFriend
+            isModalFriendOpen={isModalFriendOpen}
+            setIsModalFriendOpen={setIsModalFriendOpen}
+            friends={friends}
+            setFriends={setFriends}
+          />
+
         </div>
 
         <div className='profileRelationsArea' style={{gridArea:'profileRelationsArea'}}>
           
           <ProfileRelationsContent
             name = 'Communities'
-            array = {communityDefault()}
+            array = {arrayDefault(communities)}
             sourceImage='http://placehold.it/300x800'
           />
 
           <ProfileRelationsContent
             name='Friends'
-            array={pessoasFavoritas}
+            array={arrayDefault(friends)}
             sourceImage='http://placehold.it/300x800'
           />
 
           <ProfileRelationsContent
             name='Followers'
-            array={arrayDefault()}
+            array={followersDefault()}
             sourceImage='http://placehold.it/300x800'
           />
 

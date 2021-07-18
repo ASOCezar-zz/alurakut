@@ -15,12 +15,12 @@ const FormWhatYouWant = (props) => {
                     </button>
                     
 
-                {/* <button onClick={() => {
+                <button onClick={() => {
                     props.setIsModalFriendOpen(!props.isModalFriendOpen) 
-                    console.log(props.isModalFriendOpen)
                 }}>
                     Adicionar um Amigo
-                </button> */}
+                </button>
+                
             </div>
         </Box>
     )
