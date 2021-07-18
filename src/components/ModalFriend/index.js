@@ -120,17 +120,20 @@ const Div = styled.div`
     width: 55%;
     height: 30%;
     max-width: 650px;
+    min-width: 350px;
 
     display:grid;
     flex-direction: column;
 
     position: absolute;
 
+    margin: auto;
+
     transition: opacity 0.2s linear;
 
     opacity: ${props => props.isModalCommunityOpen ? 1 : 0};
 
-    top: ${props => props.isModalCommunityOpen? '20%' : '-20%'};
+    top: ${props => props.isModalCommunityOpen? '20%' : '-100%'};
 
     animation: ${props => props.isModalCommunityOpen ? slideUp : slideDown} 0.2s linear;
 

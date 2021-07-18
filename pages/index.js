@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import nookies from 'nookies';
 import jwt from 'jsonwebtoken';
 import MainGrid from '../src/components/MainGrid'
@@ -27,7 +28,13 @@ export default function Home(props) {
       .then((res) => {
         return res.json();
       })
-      .then((res) => {setFollowers(res)})
+      .then((res) => {
+        if (res.length > 0 ){
+          setFollowers(res)
+        }else {
+          setFollowers([]);
+        }
+          })
       .catch(err => console.error(err.message));
 
       fetch('https://graphql.datocms.com/', {
@@ -64,7 +71,7 @@ export default function Home(props) {
 
   function followersDefault(){
     let arrayAtt = [];
-    followers.map(item => {
+    followers.forEach(item => {
       arrayAtt.push({
         id: (item.id),
         title: (item.login),
@@ -73,6 +80,8 @@ export default function Home(props) {
     })
     return arrayAtt;
   }
+
+  console.log(followers)
 
   function arrayDefault(props){
     let communityAtt = [];
@@ -153,12 +162,15 @@ export default function Home(props) {
 
 export async function getServerSideProps(context) {
   
-  const token = nookies.get(context).USER_TOKEN;
+  const cookies = nookies.get(context);
+  const token = cookies.USER_TOKEN;
 
   const { isAuthenticated } = await fetch('https://alurakut.vercel.app/api/auth', {
-    headers: { Authorization: token }
+    headers: {
+      Authorization: token
+    }
   })
-  .then(res => res.json())
+  .then((res) => res.json())
 
   if(!isAuthenticated) {
     return {
@@ -170,7 +182,6 @@ export async function getServerSideProps(context) {
   }
 
   const { githubUser } = jwt.decode(token);
-  
   return {
     props: {
       githubUser,
