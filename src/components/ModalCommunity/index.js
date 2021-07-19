@@ -104,7 +104,7 @@ const hideBackground = keyframes`
 const Wrapper = styled.div`
     width: 100%;
     height: 100%;
-
+    padding: 0;
 
     background-color: rgba(0,0,0,0.7);
 
@@ -114,8 +114,6 @@ const Wrapper = styled.div`
     right: 0;
     bottom: 0;
 
-    justify-content: center;
-    align-items: center;
 
     transition: opacity 0.3s linear;
     animation: ${props => props.isModalCommunityOpen ? showBackground : hideBackground} 0.3s linear;
@@ -131,16 +129,21 @@ const Div = styled.div`
     background-color: white;
     border-radius: 8px;
     padding: 25px;
+    width: 80%;
+    height: 40%;
 
-    width: 55%;
-    height: 30%;
-    max-width: 650px;
-    min-width: 500px;
 
-    display:grid;
-    flex-direction: column;
+    @media(min-width: 860px) {
+        width: 60%;
+        height: 30%;
+        max-width: 650px;
+    }
 
-    position: absolute;
+    @media(max-width: 860px){
+        display: grid;
+    }
+
+    position: fixed;
 
     margin: auto;
 
@@ -157,15 +160,29 @@ const Div = styled.div`
 
 
     .title {
-        font-size: 32px;
+        @media(min-width: 860px) {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        font-size: 20px;
         font-weight: 400;
-        margin-bottom: 20px;
         text-align: left;
+        margin-bottom: 0;
+        padding: 0;
+    }
+    .divInput {
+        @media(max-width: 860px) {
+            display: grid;
+            gap: 12px;
+        }
     }
     form{
         align-items: center;
         justify-content: center;
         padding: 0;
+        display: grid;
+        grid-row-gap: 5px;
+        grid-template-columns: 100%;
     }
     input {
         width: 100%;
@@ -173,9 +190,15 @@ const Div = styled.div`
         color: #333333;
         border: 0;
         padding: 14px 16px;
-        margin-bottom: 14px;
         border-radius: 10000px;
+        @media(min-width: 860px) {
+            margin-bottom: 14px;
+        }
         ::placeholder {
+
+            @media(max-width: 860px) {
+                font-size: 8pt;
+            }
             color: #333333;
             opacity: 1;
         }   
@@ -194,7 +217,7 @@ const Div = styled.div`
 
     a {
         border: 0;
-        font-size: 14px;
+        font-size: 12px;
         padding: 8px 12px;
         color: #FFFFFF;
         border-radius: 10000px;
@@ -202,9 +225,10 @@ const Div = styled.div`
     }
 
     .buttonsDiv{
-        display:flex;
-        flex-direction: row;
-        justify-content: space-between
+            position: relative;
+            display:flex;
+            flex-direction: row;
+            justify-content: space-between;
     }
 `
 

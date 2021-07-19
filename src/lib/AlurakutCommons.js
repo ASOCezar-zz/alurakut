@@ -64,6 +64,7 @@ AlurakutMenu.Wrapper = styled.header`
     padding: 46px;
     bottom: 0;
     left: 0;
+    z-index: 1;
     right: 0;
     top: 48px;
     transition: .3s;
